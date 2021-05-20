@@ -1,29 +1,33 @@
 package ru.homework.configure.javaConfig;
 
-import lombok.val;
-import org.springframework.context.MessageSource;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.sqlite.SQLiteDataSource;
-
-import javax.sql.DataSource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
+@Getter
+@PropertySource("classpath:db.properties")
 public class JavaConfig {
 
+    @Value("${db.login}")
+    private String login;
+
+    @Value("${db.password}")
+    private String password;
+
     @Bean
-    public DataSource dataSource() {
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl("jdbc:sqlite:memory:myDb?cache=shared");
-        return dataSource;
+    public DataBase dataBase() {
+        DataBase dataBase = new DataBase();
+//        dataBase.setPassword(password);
+//        dataBase.setLogin(login);
+        return new DataBase();
     }
 
     @Bean
-    public MessageSource db() {
-        val messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("db");
-        messageSource.setDefaultEncoding("UTF-8");
-        return messageSource;
+    public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 }

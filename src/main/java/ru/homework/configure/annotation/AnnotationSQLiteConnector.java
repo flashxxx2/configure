@@ -9,16 +9,10 @@ import java.util.Locale;
 @Component
 @Getter
 public class AnnotationSQLiteConnector {
-    private final MessageSource db;
 
-    private final String login;
-    private final String password;
     private final MyDataBase ds;
 
-    public AnnotationSQLiteConnector(MessageSource db, MyDataBase ds) {
-        this.db = db;
-        this.login = db.getMessage("login", null, Locale.getDefault());
-        this.password = db.getMessage("password", null, Locale.getDefault());
+    public AnnotationSQLiteConnector(MyDataBase ds) {
         this.ds = ds;
     }
 }
