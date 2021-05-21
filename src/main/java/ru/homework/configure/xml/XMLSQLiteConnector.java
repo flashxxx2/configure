@@ -1,14 +1,16 @@
 package ru.homework.configure.xml;
 
 import lombok.Getter;
-import ru.homework.configure.configure.DataBase;
+import lombok.RequiredArgsConstructor;
+
+import javax.sql.DataSource;
 
 @Getter
+@RequiredArgsConstructor
 public class XMLSQLiteConnector {
 
-    private final DataBase ds;
+    private final String login;
+    private final String password;
+    private final DataSource ds;
 
-    public XMLSQLiteConnector(DataBase ds) {
-        this.ds = ds;
-    }
 }

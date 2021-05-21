@@ -1,7 +1,6 @@
-package ru.homework.configure.javaConfig;
+package ru.homework.configure.groovy;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.sqlite.SQLiteDataSource;
 
@@ -10,8 +9,6 @@ import javax.sql.DataSource;
 @Getter
 @Setter
 public class DataBase {
-    private String login;
-    private String password;
 
     public DataSource dataSource() {
         SQLiteDataSource dataSource = new SQLiteDataSource();

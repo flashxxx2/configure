@@ -1,13 +1,12 @@
-import org.springframework.context.support.ReloadableResourceBundleMessageSource
-import ru.homework.configure.configure.DataBase
 import ru.homework.configure.groovy.GroovyConnector
+import ru.homework.configure.groovy.DataBase
 
+Properties properties = new Properties()
+File propertiesFile = new File(getClass().getResource('/db.properties').toURI())
+propertiesFile.withInputStream {
+    properties.load(it)
+}
 beans {
-    db ReloadableResourceBundleMessageSource, {
-        defaultEncoding = 'utf-8'
-        basename = 'db'
-    }
-
-    dataBase DataBase
-    connector GroovyConnector, ref(db), ref(dataBase)
+    dataSource DataBase
+    connector(GroovyConnector, properties.login, properties.password, dataSource)
 }
