@@ -3,12 +3,17 @@ package ru.homework.configure;
 
 import lombok.val;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.QualifierAnnotationAutowireCandidateResolver;
+import org.springframework.beans.factory.config.BeanReference;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.context.support.GenericGroovyApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 import ru.homework.configure.annotation.AnnotationSQLiteConnector;
 import ru.homework.configure.groovy.GroovyConnector;
 import ru.homework.configure.javaConfig.JavaConfig;
@@ -57,8 +62,14 @@ public class ConfigureTest {
     @Test
     void programmaticConfig() {
         val context = new GenericApplicationContext();
+        context.registerBean(PropertySourcesPlaceholderConfigurer.class, () -> {
+            PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
+            configurer.setLocation(new ClassPathResource("db.properties"));
+            return configurer;
+        });
         context.registerBean("dataBase", DataBase.class);
-        context.registerBean("connector",ProgrammaticConnector.class);
+        BeanReference beanReference = new RuntimeBeanReference("dataBase");
+        context.registerBean("programmaticConnector", ProgrammaticConnector.class, "${login}", "${password}", beanReference);
         context.refresh();
         ProgrammaticConnector bean = context.getBean(ProgrammaticConnector.class);
         assertNotNull(bean.getDs());
@@ -80,7 +91,9 @@ public class ConfigureTest {
 
     @Test
     void kotlinConfig() {
-        val context = new GenericApplicationContext();
+        DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+        factory.setAutowireCandidateResolver(new QualifierAnnotationAutowireCandidateResolver());
+        GenericApplicationContext context = new GenericApplicationContext(factory);
         BeansKt.getBeans().initialize(context);
         context.refresh();
         val bean = context.getBean(KotlinConnector.class);

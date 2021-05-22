@@ -1,10 +1,10 @@
 package ru.homework.configure.groovy;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class GroovyConnector {
 
     private final String login;

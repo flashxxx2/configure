@@ -1,8 +1,5 @@
 package ru.homework.configure.annotation;
 
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.sqlite.SQLiteDataSource;
 

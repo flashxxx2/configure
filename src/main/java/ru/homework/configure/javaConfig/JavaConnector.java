@@ -1,12 +1,12 @@
 package ru.homework.configure.javaConfig;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class JavaConnector {
 
     private final String login;
